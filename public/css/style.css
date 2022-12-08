@@ -1,6 +1,12 @@
 header {
   text-align: center; }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center; }
+
 .spinner {
   animation: rotator 1.4s linear infinite;
   position: absolute;
@@ -44,7 +50,11 @@ header {
 
 #histories {
   background: #f7f8f9;
-  padding-top: 16px; }
+  max-width: 1168px;
+  margin: 0 auto;
+  padding: 0;
+  padding-top: 16px;
+  border-radius: 8px; }
 
 .history-container {
   position: relative; }
@@ -68,3 +78,7 @@ header {
   padding-left: 16px;
   background: linear-gradient(to right, #f7f8f9, #f7f8f9, transparent);
   pointer-events: none; }
+
+.days {
+  width: 60px;
+  height: 250px; }

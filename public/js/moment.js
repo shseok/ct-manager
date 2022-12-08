@@ -127,7 +127,17 @@ const setRecsWithHistories = (histories) => {
       ) {
         return;
       }
-      let targetX = +e.target.getAttribute('x') - 100 + 10;
+      let targetX =
+        +e.target.getAttribute('x') -
+        (Math.floor(+$markRect.getAttribute('width') / 2) - 10);
+      if (+recEl.getAttribute('x') < 160) {
+        targetX = +e.target.getAttribute('x');
+      }
+      if (+recEl.getAttribute('x') > 1000) {
+        targetX =
+          +e.target.getAttribute('x') -
+          (Math.floor(+$markRect.getAttribute('width') / 2) + 80);
+      }
       let targetY = +e.target.getAttribute('y') - 34;
       const targetDate = e.target.getAttribute('data-date');
       const targetSolvedNum = e.target.getAttribute('data-num');
