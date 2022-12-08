@@ -1,6 +1,6 @@
-const dotenv = require('dotenv').config();
-const { Client } = require('@notionhq/client');
-
+import dotenv from 'dotenv';
+import { Client } from '@notionhq/client';
+dotenv.config();
 // Initializing a client
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -8,10 +8,16 @@ const notion = new Client({
 
 const database_id = process.env.NOTION_DATABASE_ID;
 
-module.exports = async function getData() {
+export async function getData() {
   const payload = {
     database_id,
     method: 'POST',
+    sorts: [
+      {
+        property: 'Date',
+        direction: 'ascending',
+      },
+    ],
   };
   const { results } = await notion.databases.query(payload);
   return results.map((page) => {
@@ -25,4 +31,4 @@ module.exports = async function getData() {
       date: page.properties.Date.date?.start,
     };
   });
-};
+}

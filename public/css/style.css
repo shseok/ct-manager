@@ -41,3 +41,19 @@ header {
   100% {
     stroke-dashoffset: 187;
     transform: rotate(450deg); } }
+
+.history-container {
+  position: relative; }
+
+.rec-container {
+  overflow-x: auto;
+  direction: rtl;
+  padding: 0px 16px; }
+
+.day-of-week-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-left: 16px;
+  background: linear-gradient(to right, #f7f8f9, #f7f8f9, transparent);
+  pointer-events: none; }
