@@ -1,4 +1,6 @@
 // const $histories = document.querySelector('#histories');
+import setRecsWithHistories from './moment.js';
+
 const $loading = document.querySelector('#loading');
 let loading = false;
 
@@ -15,9 +17,7 @@ const addHistoriesToDom = async () => {
   if (!loading) {
     $loading.innerHTML = '';
   }
-  console.log(histories);
-  var now = moment(); // cdn
-  console.log(now.format());
+  setRecsWithHistories(histories);
   // histories.forEach((history) => {
   //   console.log(history);
   // });
