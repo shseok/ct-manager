@@ -36,13 +36,19 @@ const setRecsWithHistories = (histories) => {
   console.log(histories);
   var now = moment(); // cdn
   const coordinate = { x: 1100, y: 0 };
+  const monthXCoordinate = {};
   for (let i = 364; i >= 0; i--) {
     // make a simple rectangle
     let newRect = document.createElementNS(
       'http://www.w3.org/2000/svg',
       'rect'
     );
-    const dayIdx = now.subtract(364 - i, 'days').day();
+    const dateObj = now.subtract(364 - i, 'days');
+    const dayIdx = dateObj.day();
+    const dayInfo = dateObj.format('YYYY-MM-DD');
+    if (dayInfo.split('-')[2] === '01') {
+      monthXCoordinate[+dayInfo.split('-')[1]] = coordinate.x;
+    }
     coordinate.y = calcY(dayIdx);
 
     newRect.setAttribute('width', '18');
@@ -59,11 +65,38 @@ const setRecsWithHistories = (histories) => {
     }
     now = moment();
   }
+  for (const [key, value] of Object.entries(monthXCoordinate)) {
+    let newText = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'text'
+    );
+    newText.setAttribute('font-size', '13');
+    newText.setAttribute('text-anchor', 'start');
+    newText.setAttribute('x', `${value}`);
+    newText.setAttribute('y', '160');
+    newText.setAttribute('dy', '0.3em');
+    newText.setAttribute('fill', '#8a8f95');
+    newText.textContent = `${key}월`;
+
+    $recContainer.querySelector('svg').append(newText);
+  }
 };
 
 export default setRecsWithHistories;
 
 /*
+*                   <text font-size="13" text-anchor="start" x="1080" y="160" dy="0.3em" fill="#8a8f95">12월</text>
+                    <text font-size="13" text-anchor="start" x="1000" y="160" dy="0.3em" fill="#8a8f95">11월</text>
+                    <text font-size="13" text-anchor="start" x="900" y="160" dy="0.3em" fill="#8a8f95">10월</text>
+                    <text font-size="13" text-anchor="start" x="820" y="160" dy="0.3em" fill="#8a8f95">9월</text>
+                    <text font-size="13" text-anchor="start" x="740" y="160" dy="0.3em" fill="#8a8f95">8월</text>
+                    <text font-size="13" text-anchor="start" x="640" y="160" dy="0.3em" fill="#8a8f95">7월</text>
+                    <text font-size="13" text-anchor="start" x="560" y="160" dy="0.3em" fill="#8a8f95">6월</text>
+                    <text font-size="13" text-anchor="start" x="480" y="160" dy="0.3em" fill="#8a8f95">5월</text>
+                    <text font-size="13" text-anchor="start" x="380" y="160" dy="0.3em" fill="#8a8f95">4월</text>
+                    <text font-size="13" text-anchor="start" x="300" y="160" dy="0.3em" fill="#8a8f95">3월</text>
+                    <text font-size="13" text-anchor="start" x="220" y="160" dy="0.3em" fill="#8a8f95">2월</text>
+                    <text font-size="13" text-anchor="start" x="120" y="160" dy="0.3em" fill="#8a8f95">1월</text>
 *                   <rect width="18" height="18" x="1100" y="80" rx="5" fill="#dddfe0" stroke-width="2.5"></rect>
                     <rect width="18" height="18" x="1100" y="60" rx="5" fill="#a1e4ac" stroke-width="2.5"></rect>
                     <rect width="18" height="18" x="1100" y="40" rx="5" fill="#a1e4ac" stroke-width="2.5"></rect>
