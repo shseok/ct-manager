@@ -61,13 +61,27 @@ header {
     transform: rotate(450deg);
   }
 }
+#histories {
+  background: #f7f8f9;
+  padding-top: 33px;
+}
 
-.history-container{
+.history-container {
   position: relative;
 }
 
-.rec-container{
-  overflow-x: auto;direction: rtl; padding: 0px 16px;
+.rec-container {
+  overflow-x: auto;
+  direction: rtl;
+  padding: 0px 16px;
+}
+
+.recs {
+  direction: ltr;
+  height: 180px;
+  width: 1100px;
+  display: block;
+  margin: 0px auto;
 }
 
 .day-of-week-container {

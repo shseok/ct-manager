@@ -1,4 +1,4 @@
-const $recContainer = document.querySelector('.rec-container');
+const $recs = document.querySelector('.recs');
 // const days = ['일', '월', '화', '수', '목', '금', '토'];
 
 const calcY = (daysIdx) => {
@@ -32,11 +32,13 @@ const calcY = (daysIdx) => {
 };
 
 const setRecsWithHistories = (histories) => {
-  console.log($recContainer.querySelector('svg'));
+  histories = histories.filter((history) => history.user === '현석 신'); // for test
   console.log(histories);
-  var now = moment(); // cdn
+  let now = moment(); // cdn
   const coordinate = { x: 1100, y: 0 };
   const monthXCoordinate = {};
+  let color = '#DDDFE0';
+  let solvedNum = 0;
   for (let i = 364; i >= 0; i--) {
     // make a simple rectangle
     let newRect = document.createElementNS(
@@ -46,20 +48,47 @@ const setRecsWithHistories = (histories) => {
     const dateObj = now.subtract(364 - i, 'days');
     const dayIdx = dateObj.day();
     const dayInfo = dateObj.format('YYYY-MM-DD');
-    if (dayInfo.split('-')[2] === '01') {
-      monthXCoordinate[+dayInfo.split('-')[1]] = coordinate.x;
+    const mon = +dayInfo.split('-')[2];
+    const day = +dayInfo.split('-')[1];
+    if (mon === 1) {
+      monthXCoordinate[day] = coordinate.x;
     }
     coordinate.y = calcY(dayIdx);
+
+    solvedNum = histories.filter((history) => history.date === dayInfo).length;
+    if (solvedNum > 2) {
+      color = '#4EB17C';
+    } else if (solvedNum > 1) {
+      color = '#78CB94';
+    } else if (solvedNum > 0) {
+      color = '#A1E4AC';
+    } else {
+      color = '#DDDFE0';
+    }
 
     newRect.setAttribute('width', '18');
     newRect.setAttribute('height', '18');
     newRect.setAttribute('x', `${coordinate.x}`);
     newRect.setAttribute('y', `${coordinate.y}`);
     newRect.setAttribute('rx', '5');
-    newRect.setAttribute('fill', '#dddfe0');
+    newRect.setAttribute('fill', color);
     newRect.setAttribute('stroke-width', '2.5');
+    newRect.setAttribute('data-date', dayInfo);
+    newRect.setAttribute('data-num', solvedNum);
+    newRect.addEventListener('click', (e) => {
+      console.log(
+        `날짜: ${e.target.getAttribute(
+          'data-date'
+        )} / 푼 개수: ${e.target.getAttribute('data-num')}`
+      );
+      /*
+       * <rect pointer-events="none" width="200" height="30" rx="5" fill="#000000" display="inline" x="50.181818181818244" y="104"></rect>
+       * <text pointer-events="none" fill="#ffffff" font-size="13" text-anchor="middle" display="inline" x="150.18181818181824" y="120" dy="0.25em">2021-12-09: 0문제 해결</text>
+       * */
+    });
 
-    $recContainer.querySelector('svg').append(newRect);
+    $recs.append(newRect);
+
     if (dayIdx === 0) {
       coordinate.x -= 20;
     }
@@ -78,7 +107,7 @@ const setRecsWithHistories = (histories) => {
     newText.setAttribute('fill', '#8a8f95');
     newText.textContent = `${key}월`;
 
-    $recContainer.querySelector('svg').append(newText);
+    $recs.append(newText);
   }
 };
 
