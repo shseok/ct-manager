@@ -75,17 +75,6 @@ const setRecsWithHistories = (histories) => {
     newRect.setAttribute('stroke-width', '2.5');
     newRect.setAttribute('data-date', dayInfo);
     newRect.setAttribute('data-num', solvedNum);
-    newRect.addEventListener('click', (e) => {
-      console.log(
-        `날짜: ${e.target.getAttribute(
-          'data-date'
-        )} / 푼 개수: ${e.target.getAttribute('data-num')}`
-      );
-      /*
-       * <rect pointer-events="none" width="200" height="30" rx="5" fill="#000000" display="inline" x="50.181818181818244" y="104"></rect>
-       * <text pointer-events="none" fill="#ffffff" font-size="13" text-anchor="middle" display="inline" x="150.18181818181824" y="120" dy="0.25em">2021-12-09: 0문제 해결</text>
-       * */
-    });
 
     $recs.append(newRect);
 
@@ -109,6 +98,66 @@ const setRecsWithHistories = (histories) => {
 
     $recs.append(newText);
   }
+  let markRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  let markText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  markRect.classList.add('mark-rect');
+  markRect.setAttribute('pointer-events', 'none');
+  markRect.setAttribute('width', '200');
+  markRect.setAttribute('height', '30');
+  markRect.setAttribute('rx', '5');
+  markRect.setAttribute('fill', '#000000');
+  markRect.setAttribute('display', 'none');
+
+  markText.classList.add('mark-text');
+  markText.setAttribute('pointer-events', 'none');
+  markText.setAttribute('fill', '#ffffff');
+  markText.setAttribute('font-size', '13');
+  markText.setAttribute('text-anchor', 'middle');
+  markText.setAttribute('display', 'none');
+  $recs.append(markRect, markText);
+
+  const $markRect = document.querySelector('.mark-rect');
+  const $markText = document.querySelector('.mark-text');
+
+  Array.from($recs.children).forEach((recEl) => {
+    recEl.addEventListener('mouseover', (e) => {
+      if (
+        recEl.classList.contains('mark-rect') ||
+        recEl.classList.contains('mark-text')
+      ) {
+        return;
+      }
+      let targetX = +e.target.getAttribute('x') - 100 + 10;
+      let targetY = +e.target.getAttribute('y') - 34;
+      const targetDate = e.target.getAttribute('data-date');
+      const targetSolvedNum = e.target.getAttribute('data-num');
+      $markRect.setAttribute('display', 'inline');
+      $markRect.setAttribute('x', `${targetX}`);
+      $markRect.setAttribute('y', `${targetY}`);
+
+      $markText.setAttribute('display', 'inline');
+      $markText.setAttribute('x', `${targetX + 100}`);
+      $markText.setAttribute('y', `${targetY + 16}`);
+      $markText.setAttribute('dy', '0.25em');
+      $markText.textContent = `날짜: ${targetDate} / 푼 개수: ${targetSolvedNum}`;
+      /*
+       * <rect pointer-events="none" width="200" height="30" rx="5" fill="#000000" display="inline" x="50.181818181818244" y="104"></rect>
+       * <text pointer-events="none" fill="#ffffff" font-size="13" text-anchor="middle" display="inline" x="150.18181818181824" y="120" dy="0.25em">2021-12-09: 0문제 해결</text>
+       * */
+    });
+
+    recEl.addEventListener('mouseout', () => {
+      $markRect.setAttribute('display', 'none');
+      $markRect.removeAttribute('x');
+      $markRect.removeAttribute('y');
+
+      $markText.setAttribute('display', 'none');
+      $markRect.removeAttribute('x');
+      $markRect.removeAttribute('y');
+      $markRect.removeAttribute('dy');
+      $markText.textContent = '';
+    });
+  });
 };
 
 export default setRecsWithHistories;
