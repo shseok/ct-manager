@@ -20,8 +20,12 @@ export async function getData() {
     ],
   };
   const { results } = await notion.databases.query(payload);
-  const filtered = results.map((page) => {
-    return {
+  const dict = {};
+  results.forEach((page) => {
+    if (typeof dict[page.properties.user.created_by.name] === 'undefined') {
+      dict[page.properties.user.created_by.name] = [];
+    }
+    const filterdUserObj = {
       id: page.id,
       user: page.properties.user.created_by.name,
       tags:
@@ -30,7 +34,7 @@ export async function getData() {
           : page.properties.Tags.multi_select[0].name,
       date: page.properties.Date.date?.start,
     };
+    dict[page.properties.user.created_by.name].push(filterdUserObj);
   });
-  console.log(filtered);
-  return filtered;
+  return dict;
 }

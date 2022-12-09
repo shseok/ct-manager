@@ -220,18 +220,17 @@ const initContainerOfDays = () => {
 };
 
 const setRecsWithHistories = (histories) => {
-  histories = histories.filter((history) => history.user === '현석 신'); // for test
-  // console.log(histories);
+  console.log(histories);
 
-  const $recsContainer = initContainerOfRecs();
-  $historyContainer.append($recsContainer);
-
-  const $recs = $recsContainer.querySelector('.recs');
-  const monthXCoordinate = initRecsEls(histories, $recs);
-  createMonthsEls(monthXCoordinate, $recs);
-  createMarkEls($recs);
-  handleMarkEevent($recs);
-  initContainerOfDays();
+  // const $recsContainer = initContainerOfRecs();
+  // $historyContainer.append($recsContainer);
+  //
+  // const $recs = $recsContainer.querySelector('.recs');
+  // const monthXCoordinate = initRecsEls(histories, $recs);
+  // createMonthsEls(monthXCoordinate, $recs);
+  // createMarkEls($recs);
+  // handleMarkEevent($recs);
+  // initContainerOfDays();
 };
 
 export default setRecsWithHistories;
