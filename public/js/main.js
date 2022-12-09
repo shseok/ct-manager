@@ -18,9 +18,6 @@ const addHistoriesToDom = async () => {
     $loading.innerHTML = '';
   }
   setRecsWithHistories(histories);
-  // histories.forEach((history) => {
-  //   console.log(history);
-  // });
 };
 
 addHistoriesToDom();

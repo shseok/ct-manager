@@ -69,42 +69,60 @@ main{
   }
 }
 #histories {
-  background: #f7f8f9;
+  //border: 1px solid red;
   max-width: 1168px;
   margin: 0 auto;
   padding: 0;
-  padding-top: 16px;
-  border-radius: 8px;
-}
 
-.history-container {
-  position: relative;
-}
+  .history-container{
 
-.rec-container {
-  overflow-x: auto;
-  direction: rtl;
-  padding: 0px 16px;
-}
+    .gap{
+      display: block;
+      height: 32px;
+    }
 
-.recs {
-  direction: ltr;
-  height: 250px;
-  width: 1100px;
-  display: block;
-  margin: 0px auto;
-}
+    .user-container{
+      background: #f7f8f9;
+      border-radius: 8px;
+      padding: 0;
 
-.days-container {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  padding-left: 16px;
-  background: linear-gradient(to right, rgb(247, 248, 249), rgb(247, 248, 249), transparent);
-  pointer-events: none;
-}
+      .user-name-container{
+        font-size: 1.5em;
+      }
 
-.days{
-  width: 60px;
-  height: 250px;
+      .user-info-container {
+        position: relative;
+
+        .rec-container {
+          overflow-x: auto;
+          direction: rtl;
+          padding: 0px 16px;
+
+          .recs {
+            direction: ltr;
+            height: 250px;
+            width: 1100px;
+            display: block;
+            margin: 0px auto;
+          }
+        }
+
+        .days-container {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          padding-left: 16px;
+          background: linear-gradient(to right, rgb(247, 248, 249), rgb(247, 248, 249), transparent);
+          pointer-events: none;
+
+          .days{
+            width: 60px;
+            height: 250px;
+          }
+        }
+      }
+    }
+
+
+  }
 }

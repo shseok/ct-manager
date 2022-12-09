@@ -134,8 +134,8 @@ const createMarkEls = ($recs) => {
 };
 
 const handleMarkEevent = ($recs) => {
-  const $markRect = document.querySelector('.mark-rect');
-  const $markText = document.querySelector('.mark-text');
+  const $markRect = $recs.querySelector('.mark-rect');
+  const $markText = $recs.querySelector('.mark-text');
 
   Array.from($recs.children).forEach((recEl) => {
     recEl.addEventListener('mouseover', (e) => {
@@ -216,21 +216,33 @@ const initContainerOfDays = () => {
     targetY += 20;
   });
   divEl.append(svgEl);
-  $historyContainer.append(divEl);
+  return divEl;
 };
 
-const setRecsWithHistories = (histories) => {
-  console.log(histories);
+const setRecsWithHistories = (usersData) => {
+  for (const [userName, userData] of Object.entries(usersData)) {
+    const $userContainer = document.createElement('div');
+    $userContainer.className = 'user-container';
+    const $nameContainer = document.createElement('div');
+    $nameContainer.className = 'user-name-container';
+    $nameContainer.textContent = userName;
+    const $infoContainer = document.createElement('div');
+    $infoContainer.className = 'user-info-container';
+    const $gap = document.createElement('div');
+    $gap.className = 'gap';
 
-  // const $recsContainer = initContainerOfRecs();
-  // $historyContainer.append($recsContainer);
-  //
-  // const $recs = $recsContainer.querySelector('.recs');
-  // const monthXCoordinate = initRecsEls(histories, $recs);
-  // createMonthsEls(monthXCoordinate, $recs);
-  // createMarkEls($recs);
-  // handleMarkEevent($recs);
-  // initContainerOfDays();
+    const $recsContainer = initContainerOfRecs();
+    const $recs = $recsContainer.querySelector('.recs');
+    const monthXCoordinate = initRecsEls(userData, $recs);
+    createMonthsEls(monthXCoordinate, $recs);
+    createMarkEls($recs);
+    handleMarkEevent($recs);
+    const $daysContainer = initContainerOfDays();
+
+    $infoContainer.append($recsContainer, $daysContainer);
+    $userContainer.append($nameContainer, $infoContainer);
+    $historyContainer.append($gap, $userContainer);
+  }
 };
 
 export default setRecsWithHistories;
