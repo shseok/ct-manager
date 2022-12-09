@@ -20,7 +20,7 @@ export async function getData() {
     ],
   };
   const { results } = await notion.databases.query(payload);
-  return results.map((page) => {
+  const filtered = results.map((page) => {
     return {
       id: page.id,
       user: page.properties.user.created_by.name,
@@ -31,4 +31,6 @@ export async function getData() {
       date: page.properties.Date.date?.start,
     };
   });
+  console.log(filtered);
+  return filtered;
 }
