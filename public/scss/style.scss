@@ -1,6 +1,10 @@
 $offset: 187;
 $duration: 1.4s;
 
+*{
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
 header {
   text-align: center;
 }
@@ -88,6 +92,7 @@ main{
 
       .user-name-container{
         font-size: 1.5em;
+        padding: 16px;
       }
 
       .user-info-container {
