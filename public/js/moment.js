@@ -133,55 +133,68 @@ const createMarkEls = ($recs) => {
   $recs.append(markRect, markText);
 };
 
+const onMouseOver = (e, $markRect, $markText) => {
+  const target = e.target;
+  if (
+    target.classList.contains('mark-rect') ||
+    target.classList.contains('mark-text') ||
+    target.textContent.includes('월')
+  ) {
+    return;
+  }
+  let targetX =
+    +target.getAttribute('x') -
+    (Math.floor(+$markRect.getAttribute('width') / 2) - 10);
+  if (+target.getAttribute('x') < 160) {
+    targetX = +target.getAttribute('x');
+  }
+  if (+target.getAttribute('x') > 1000) {
+    targetX =
+      +target.getAttribute('x') -
+      (Math.floor(+$markRect.getAttribute('width') / 2) + 80);
+  }
+  let targetY = +target.getAttribute('y') - 34;
+  const targetDate = target.getAttribute('data-date');
+  const targetSolvedNum = target.getAttribute('data-num');
+  $markRect.setAttribute('display', 'inline');
+  $markRect.setAttribute('x', `${targetX}`);
+  $markRect.setAttribute('y', `${targetY}`);
+
+  $markText.setAttribute('display', 'inline');
+  $markText.setAttribute('x', `${targetX + 100}`);
+  $markText.setAttribute('y', `${targetY + 16}`);
+  $markText.setAttribute('dy', '0.25em');
+  $markText.textContent = `날짜: ${targetDate} / 푼 개수: ${targetSolvedNum}`;
+};
+
+const onMouseOut = ($markRect, $markText) => {
+  $markRect.setAttribute('display', 'none');
+  $markRect.removeAttribute('x');
+  $markRect.removeAttribute('y');
+
+  $markText.setAttribute('display', 'none');
+  $markRect.removeAttribute('x');
+  $markRect.removeAttribute('y');
+  $markRect.removeAttribute('dy');
+  $markText.textContent = '';
+};
+
 const handleMarkEevent = ($recs) => {
   const $markRect = $recs.querySelector('.mark-rect');
   const $markText = $recs.querySelector('.mark-text');
 
-  Array.from($recs.children).forEach((recEl) => {
-    recEl.addEventListener('mouseover', (e) => {
-      if (
-        recEl.classList.contains('mark-rect') ||
-        recEl.classList.contains('mark-text')
-      ) {
-        return;
-      }
-      let targetX =
-        +e.target.getAttribute('x') -
-        (Math.floor(+$markRect.getAttribute('width') / 2) - 10);
-      if (+recEl.getAttribute('x') < 160) {
-        targetX = +e.target.getAttribute('x');
-      }
-      if (+recEl.getAttribute('x') > 1000) {
-        targetX =
-          +e.target.getAttribute('x') -
-          (Math.floor(+$markRect.getAttribute('width') / 2) + 80);
-      }
-      let targetY = +e.target.getAttribute('y') - 34;
-      const targetDate = e.target.getAttribute('data-date');
-      const targetSolvedNum = e.target.getAttribute('data-num');
-      $markRect.setAttribute('display', 'inline');
-      $markRect.setAttribute('x', `${targetX}`);
-      $markRect.setAttribute('y', `${targetY}`);
+  // event bubbling
+  $recs.addEventListener('mouseover', (e) =>
+    onMouseOver(e, $markRect, $markText)
+  );
 
-      $markText.setAttribute('display', 'inline');
-      $markText.setAttribute('x', `${targetX + 100}`);
-      $markText.setAttribute('y', `${targetY + 16}`);
-      $markText.setAttribute('dy', '0.25em');
-      $markText.textContent = `날짜: ${targetDate} / 푼 개수: ${targetSolvedNum}`;
-    });
+  $recs.addEventListener('mouseout', () => onMouseOut($markRect, $markText));
 
-    recEl.addEventListener('mouseout', () => {
-      $markRect.setAttribute('display', 'none');
-      $markRect.removeAttribute('x');
-      $markRect.removeAttribute('y');
-
-      $markText.setAttribute('display', 'none');
-      $markRect.removeAttribute('x');
-      $markRect.removeAttribute('y');
-      $markRect.removeAttribute('dy');
-      $markText.textContent = '';
-    });
-  });
+  // not event bubbling
+  // Array.from($recs.children).forEach((recEl) => {
+  //   recEl.addEventListener('mouseover', (e) => {});
+  //   recEl.addEventListener('mouseout', () => {});
+  // });
 };
 
 const initContainerOfDays = () => {
