@@ -47,6 +47,7 @@ const initRecsEls = (data, $recs) => {
   const monthXCoordinate = {};
   let color = '#DDDFE0';
   let solvedNum = 0;
+  const $fragment = document.createDocumentFragment();
 
   for (let i = 364; i >= 0; i--) {
     // make a simple rectangle
@@ -85,7 +86,7 @@ const initRecsEls = (data, $recs) => {
     newRect.setAttribute('data-date', dayInfo);
     newRect.setAttribute('data-num', solvedNum);
 
-    $recs.append(newRect);
+    $fragment.append(newRect);
 
     if (dayIdx === 0) {
       coordinate.x -= 20;
@@ -93,9 +94,11 @@ const initRecsEls = (data, $recs) => {
     now = moment();
   }
 
+  $recs.append($fragment);
   return monthXCoordinate;
 };
 const createMonthsEls = (coordinate, $recs) => {
+  const $fragment = document.createDocumentFragment();
   for (const [key, value] of Object.entries(coordinate)) {
     let newText = document.createElementNS(
       'http://www.w3.org/2000/svg',
@@ -109,8 +112,9 @@ const createMonthsEls = (coordinate, $recs) => {
     newText.setAttribute('fill', '#8a8f95');
     newText.textContent = `${key}월`;
 
-    $recs.append(newText);
+    $fragment.append(newText);
   }
+  $recs.append($fragment);
 };
 
 const createMarkEls = ($recs) => {
