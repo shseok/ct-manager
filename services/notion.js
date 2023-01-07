@@ -11,15 +11,15 @@ const database_id = process.env.NOTION_DATABASE_ID;
 export async function getData() {
   const payload = {
     database_id,
-    method: 'POST',
-    sorts: [
-      {
-        property: 'Date',
-        direction: 'ascending',
-      },
-    ],
+    // sorts: [ // 데이터가 중간에 비어있으면 정렬이 안되는 현상
+    //   {
+    //     property: 'Date',
+    //     direction: 'ascending',
+    //   },
+    // ],
   };
   const { results } = await notion.databases.query(payload);
+  console.log(results);
   const dict = {};
   results.forEach((page) => {
     if (typeof dict[page.properties.user.created_by.name] === 'undefined') {
@@ -36,5 +36,14 @@ export async function getData() {
     };
     dict[page.properties.user.created_by.name].push(filterdUserObj);
   });
+  for (let key in dict) {
+    // console.log(dict[key]);
+    dict[key].sort(
+      (a, b) =>
+        parseInt(a['date'].split('-').join('')) -
+        parseInt(b['date'].split('-').join(''))
+    );
+  }
+  console.log(dict);
   return dict;
 }
