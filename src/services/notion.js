@@ -7,7 +7,6 @@ const notion = new Client({
 });
 
 const database_id = process.env.NOTION_DATABASE_ID;
-
 export async function getData() {
   const payload = {
     database_id,
