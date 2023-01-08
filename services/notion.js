@@ -37,7 +37,7 @@ export async function getData() {
     dict[page.properties.user.created_by.name].push(filterdUserObj);
   });
   for (let key in dict) {
-    // console.log(dict[key]);
+    // 단, 유저가 노션에서 date를 모두 입력할 수 있어야한다.
     dict[key].sort(
       (a, b) =>
         parseInt(a['date'].split('-').join('')) -
