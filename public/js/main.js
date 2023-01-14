@@ -6,7 +6,7 @@ let loading = false;
 
 const getHistoriesFromBackend = async () => {
   loading = true;
-  const res = await fetch('http://localhost:5000/histories');
+  const res = await fetch('http://localhost:3000/histories');
   const data = await res.json();
   loading = false;
   return data;
