@@ -29,6 +29,7 @@
   "dependencies": {
     "@notionhq/client": "^2.2.2",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",

@@ -49,13 +49,13 @@ const initRecsEls = (data, $recs) => {
   let solvedNum = 0;
   const $fragment = document.createDocumentFragment();
 
-  for (let i = 364; i >= 0; i--) {
+  for (let i = 365; i >= 0; i--) {
     // make a simple rectangle
     let newRect = document.createElementNS(
       'http://www.w3.org/2000/svg',
       'rect'
     );
-    const dateObj = now.subtract(364 - i, 'days');
+    const dateObj = now.subtract(365 - i, 'days');
     const dayIdx = dateObj.day();
     const dayInfo = dateObj.format('YYYY-MM-DD');
     const mon = +dayInfo.split('-')[2];
