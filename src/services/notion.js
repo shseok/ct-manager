@@ -13,7 +13,7 @@ const notion = new Client({
 
 const database_id = process.env.NOTION_DATABASE_ID;
 export async function getData() {
-  let payload = {
+  const payload = {
     database_id,
     filter: {
       timestamp: 'created_time',
@@ -29,6 +29,16 @@ export async function getData() {
       },
     ],
   };
+  const nextPayload = {
+    database_id,
+    sorts: [
+      // 데이터가 중간에 비어있으면 정렬이 안되는 현상
+      {
+        timestamp: 'created_time',
+        direction: 'ascending',
+      },
+    ],
+  };
 
   let dict = {};
   try {
@@ -36,30 +46,15 @@ export async function getData() {
     let results = [];
     let next_cur = queryResult['next_cursor'];
     results = queryResult['results'];
-    // console.log(queryResult['results'].map((each) => each.created_time));
-    // console.log('---------------');
     while (queryResult.has_more) {
-      // payload['start_cursor'] = next_cur;
-      queryResult = await notion.databases.query({
-        database_id,
-        start_cursor: next_cur,
-        sorts: [
-          // 데이터가 중간에 비어있으면 정렬이 안되는 현상
-          {
-            timestamp: 'created_time',
-            direction: 'ascending',
-          },
-        ],
-      });
+      nextPayload['start_cursor'] = next_cur;
+      queryResult = await notion.databases.query(nextPayload);
       next_cur = queryResult['next_cursor'];
-      // console.log(queryResult['results'].map((each) => each.created_time));
-      // console.log('---------------');
       results = [...results, ...queryResult['results']];
       if (!next_cur) {
         break;
       }
     }
-    // console.log(results.map((each) => each.created_time));
     results.forEach((page) => {
       if (typeof dict[page.properties.user.created_by.name] === 'undefined') {
         dict[page.properties.user.created_by.name] = [];
@@ -78,18 +73,5 @@ export async function getData() {
   } catch (e) {
     console.log(e);
   }
-  console.log(dict['현석 신'].map((each) => each.date));
-  console.log(
-    // dict['현석 신'].map((each) => each.date),
-    dict['현석 신'].length
-  );
-  console.log(
-    // dict['현석 신'].map((each) => each.date),
-    dict['정현 김'].length
-  );
-  console.log(
-    // dict['현석 신'].map((each) => each.date),
-    dict['가희 정'].length
-  );
   return dict;
 }
